@@ -1,4 +1,4 @@
-package 그리디;
+package 이것이코딩테스트다.그리디;
 
 import java.util.*;
 import java.io.*;
@@ -9,7 +9,8 @@ public class 큰수의법칙3_2 {
         //첫째줄 읽기
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken()); //N개의 배열
+        //int M = Integer.
     }
 
 }

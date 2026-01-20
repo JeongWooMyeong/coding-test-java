@@ -1,4 +1,4 @@
-package 그리디;
+package 이것이코딩테스트다.그리디;
 
 import java.util.*;
 import java.io.*;
