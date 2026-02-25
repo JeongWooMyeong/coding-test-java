@@ -1,0 +1,38 @@
+package 이것이코딩테스트다2.정렬;
+
+import java.util.*;
+
+//계수 정렬 사용
+
+public class 부품찾기2 {
+
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+
+        //N (가게의 부품 개수)
+        int n = sc.nextInt();
+        int[] arr = new int[1000001];
+        for(int i=0;i<n;i++){
+            int x = sc.nextInt();
+            arr[x] = 1;
+        }
+
+        //M (손님이 확인 요청한 부품 개수)
+        int m = sc.nextInt();
+        int[] targets = new int[m];
+        for(int i=0;i<m;i++){
+            targets[i] = sc.nextInt();
+        }
+
+        //손님이 확인 요청한 부품 번호를 하나씩 확인
+        for(int i=0;i<m;i++){
+            if(arr[targets[i]] == 1){
+                System.out.print("yes ");
+            }else{
+                System.out.print("no ");
+            }
+        }
+
+    }
+
+}
