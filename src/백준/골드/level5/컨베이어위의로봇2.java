@@ -1,4 +1,4 @@
-package 백준.실버.level5;
+package 백준.골드.level5;
 
 import java.util.*;
 import java.io.*;
