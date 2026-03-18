@@ -25,7 +25,13 @@ public class 가장긴증가하는부분수열4 {
             }
         }
 
+        StringBuilder sb = new StringBuilder();
+        for(int x : lis){
+            sb.append(x).append(" ");
+        }
         System.out.println(lis.size());
+        System.out.print(sb);
+//        System.out.println(lis.size());
     }
 
     //lowerBound : key 이상이 처음 나온ㄴ 위치 반
