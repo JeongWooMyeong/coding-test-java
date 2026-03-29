@@ -4,6 +4,19 @@ import java.util.*;
 import java.io.*;
 
 public class 기둥과보설치3 {
+    public static void main(String[] args) throws Exception{
+        int n = 5;
+        //int[][] build_frame = 	{{1,0,0,1},{1,1,1,1},{2,1,0,1},{2,2,1,1},{5,0,0,1},{5,1,0,1},{4,2,1,1},{3,2,1,1}};
+        int[][] build_frame = {{0,0,0,1},{2,0,0,1},{4,0,0,1},{0,1,1,1},{1,1,1,1},{2,1,1,1},{3,1,1,1},{2,0,0,0},{1,1,1,0},{2,2,0,1}};
+        int[][] result = solution(n, build_frame);
+        for(int i=0;i<result.length;i++){
+            for(int j=0;j<3;j++){
+                System.out.print(result[i][j] +" ");
+            }
+            System.out.print("\n");
+        }
+    }
+
     static class Structure implements Comparable<Structure>{
         int x;
         int y;
@@ -26,7 +39,7 @@ public class 기둥과보설치3 {
 
     }
 
-    public int[][] solution(int n, int[][] build_frame) {
+    static int[][] solution(int n, int[][] build_frame) {
         List<Structure> result = new ArrayList<>();
 
         //build_frame을 돌면서 보, 기둥 설치 확인
@@ -40,7 +53,7 @@ public class 기둥과보설치3 {
                 //result에 담는다 일단
                 result.add(new Structure(x,y,a));
                 //result담은것에 대한 유효성 판별
-                if(!isValid(result)){
+                if(!isValid(result, n)){
                     //유효하지 않다면 빼버림
                     // 유효하지 않다면 조건으로 삭제
                     result.removeIf(s -> s.x == x && s.y == y && s.a == a);
@@ -53,7 +66,7 @@ public class 기둥과보설치3 {
                 // 유효하지 않다면 조건으로 삭제
                 result.removeIf(s -> s.x == x && s.y == y && s.a == a);
 
-                if(!isValid(result)){
+                if(!isValid(result, n)){
                     //유효하지 않으면 다시 넣어버림
                     result.add(new Structure(x,y,a));
                 }
@@ -76,11 +89,16 @@ public class 기둥과보설치3 {
         return answer;
     }
 
-    static boolean isValid(List<Structure> result){
+    static boolean isValid(List<Structure> result, int n){
         for(Structure s : result){
             int x = s.x;
             int y = s.y;
             int a = s.a;
+
+            // 🔥 좌표 범위 체크 추가 (0 ~ n)
+            if (x < 0 || x > n || y < 0 || y > n) return false;
+
+
             //기둥 일때
             if(a == 0){
                 boolean ok = false;
