@@ -65,6 +65,9 @@ public class 청소년상어2 {
         Fish start = map[0][0];
         Shark shark = new Shark(0,0,start.dir, start.num);
         start.alive = false;
+        //fishList.get(0).alive = false;
+
+        //fishList = copyList(map);
 
         //4. dfs 실행
         dfs(map, fishList, shark);
@@ -91,20 +94,19 @@ public class 청소년상어2 {
             if(map[nx][ny] == null || !map[nx][ny].alive) continue;
 
             //상태 복사
-            Fish[][] newboard = copyMap(map);
-            //물고리 리스트도 복사
-            List<Fish> newList = copyList(fishList);
+            List<Fish> newList = copyFishList(fishList);
+            Fish[][] newMap = copyMap(newList);
 
             //상어 이동
             //상어이동시 복사한 newboard를 써야함
-            Fish target = newboard[nx][ny];
+            Fish target = newMap[nx][ny];
             Shark newshark = new Shark(nx, ny, target.dir, shark.score+target.num);
             newList.get(target.num-1).alive = false;    //먹음
             //먹은 물고기 처리
-            newboard[nx][ny] = null;
+            newMap[nx][ny] = null;
 
 
-            dfs(newboard, newList, newshark);
+            dfs(newMap, newList, newshark);
 
 
 
@@ -146,29 +148,19 @@ public class 청소년상어2 {
         }
     }
     //여러갈래로 나누어져 있어서 map 복사 (깊은 복사로 해야 독립적인 상태로 됌)
-    static Fish[][] copyMap(Fish[][] map){
+    static Fish[][] copyMap(List<Fish> fishList){
         Fish[][] newMap = new Fish[N][N];
-        for(int i=0;i<N;i++){
-            for(int j=0;j<N;j++){
-                //이거 쓰는게 영향을 주나..
-                if(map[i][j] != null) {
-                    //이건 참조만 하는거라 newmap이 바뀌면 map도 바뀜
-                    Fish f = map[i][j];
-                    newMap[i][j] = new Fish(f.x, f.y, f.num, f.dir, f.alive);
-                    //newMap[i][j] = map[i][j];
-                }
+        for(Fish f : fishList){
+            if(f.alive){
+                newMap[f.x][f.y] = f;
             }
         }
-
         return newMap;
-
     }
 
-    static List<Fish> copyList(List<Fish> fishList){
+    static List<Fish> copyFishList(List<Fish> fishList){
         List<Fish> newList = new ArrayList<>();
-        for(int i=0;i<fishList.size();i++){
-            //이것도 마찬가지 얕은복사
-            //newList.add(fishList.get(i));
+        for(int i=0;i<16;i++){
             Fish f = fishList.get(i);
             newList.add(new Fish(f.x, f.y, f.num, f.dir, f.alive));
         }
