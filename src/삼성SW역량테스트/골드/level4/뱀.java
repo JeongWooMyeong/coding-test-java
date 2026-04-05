@@ -1,9 +1,13 @@
-package 삼성SW역량테스트.골드.level1;
+package 삼성SW역량테스트.골드.level4;
 
 import java.util.*;
 import java.io.*;
 
-public class 뱀2 {
+/*
+내가 스스로 생각하고 짠 코드 - 조금 순서와 틀린 부분 있어서 뱀2에 수정
+ */
+
+public class 뱀 {
     static int N, K, L;
     static Map<Integer, Character> map = new HashMap<>();
     static int[][] board;
@@ -12,6 +16,15 @@ public class 뱀2 {
     static int[] dy = {1, 0, -1, 0};
 
     static int time = 0;
+
+    static class Snake{
+        int x, y, dir;
+        public Snake(int x, int y, int dir){
+            this.x = x;
+            this.y = y;
+            this.dir = dir;
+        }
+    }
 
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -48,17 +61,22 @@ public class 뱀2 {
     }
 
     static void bfs(){
-        Deque<int[]> queue = new ArrayDeque<>();
-        queue.offer(new int[]{0,0});
-        int dir = 0;
+        Deque<Snake> queue = new ArrayDeque<>();
+        boolean[][] visited = new boolean[N][N];
+        Snake head = new Snake(0,0, 0);
+        //Snake tail = new Snake(0,0,4);
+
+        //queue.add(tail);
+        queue.add(head);
 
         while(true){
-            time++;
-            //뽑으면 이게 자기몸 충돌을 비교할 수 없으니 peek 가져오면 되는구나..
-            int[] s = queue.peekLast();
-            int x = s[0];
-            int y = s[1];
+            Snake s = queue.pollLast();
+            int x = s.x;
+            int y = s.y;
+            int dir = s.dir;
+            //visited[x][y] = true;
 
+            time++;
             int nx = x + dx[dir];
             int ny = y + dy[dir];
 
@@ -66,23 +84,13 @@ public class 뱀2 {
             //if(visited[nx][ny]) break;
             //자기몸 충돌
             boolean hit = false;
-            for(int[] ss : queue){
-                if((ss[0] == nx && ss[1] == ny)){
-                    hit = true;
-                    break;
-                }
+            for(Snake ss : queue){
+               if((ss.x == nx && ss.y == ny) || (ss.x == x && ss.y == y)){
+                   hit = true;
+                   break;
+               }
             }
             if(hit) break;
-
-
-            //사과가 있다면 더 직관적
-            if(board[nx][ny] == 1){
-                queue.offer(new int[]{nx, ny});
-                board[nx][ny] = 0;
-            }else{
-                queue.offer(new int[]{nx, ny});
-                queue.pollFirst();
-            }
 
             //3초가 끝난 뒤에 반영이므로 맨 마지막
             if(map.containsKey(time)) {
@@ -92,6 +100,18 @@ public class 뱀2 {
                     dir = (dir + 1) % 4;
                 }
             }
+
+            //사과가 있다면
+            if(board[nx][ny] == 1){
+                board[nx][ny] = 0;
+                queue.offer(new Snake(nx, ny, dir));
+            }else{
+                Snake tail = queue.pollFirst();
+                board[tail.x][tail.y] = 0;
+                queue.offer(new Snake(nx, ny, dir));
+
+            }
+
 
 
 
