@@ -4,88 +4,85 @@ import java.util.*;
 import java.io.*;
 
 /*
-프림 알고리즘
+정점기준 prim 알고리즘
  */
 
-public class 최소스패닝트리4 {
-    static int N, M;
+public class 최소스패닝트리7 {
+    static int V,E;
+    static int result = 0;
     static ArrayList<ArrayList<Edge>> edges = new ArrayList<>();
     static boolean[] visited;
 
     static class Edge implements Comparable<Edge>{
-        private int to;
-        private int cost;
+        int to;
+        int cost;
 
         public Edge(int to, int cost){
             this.to = to;
             this.cost = cost;
         }
 
-        public int getTo(){
-            return this.to;
-        }
-
-        public int getCost(){
-            return this.cost;
-        }
-
         public int compareTo(Edge other){
             return this.cost - other.cost;
         }
-
     }
 
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        V = Integer.parseInt(st.nextToken());
+        E = Integer.parseInt(st.nextToken());
 
-        for(int i=0;i<=N;i++){
+        visited = new boolean[V+1];
+
+        //간선 정보 입력 전 리스트 초기화
+        for(int i=0;i<=V;i++){
             edges.add(new ArrayList<>());
         }
 
-        for(int i=0;i<M;i++){
+        for(int i=0;i<E;i++){
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
             int cost = Integer.parseInt(st.nextToken());
 
-            edges.get(a).add(new Edge(b, cost));
-            edges.get(b).add(new Edge(a, cost));
+            //무방향
+            edges.get(a).add(new Edge(b,cost));
+            edges.get(b).add(new Edge(a,cost));
         }
 
-        System.out.println(prim(1));
+        prim(1);
+
+        System.out.println(result);
 
     }
 
-    static int prim(int start){
+    static void prim(int start){
         PriorityQueue<Edge> pq = new PriorityQueue<>();
-        visited = new boolean[N+1];
         pq.offer(new Edge(start, 0));
-        int result = 0;
+        //visited[start] = true;
 
         while(!pq.isEmpty()){
             Edge cur = pq.poll();
-            int to = cur.getTo();
-            int cost = cur.getCost();
+            int now = cur.to;
+            int cost = cur.cost;
 
-            if(visited[to]) continue;
-            visited[to] = true;
+            if(visited[now]) continue;
+            visited[now] = true;
             result += cost;
 
-            for(Edge next : edges.get(to)){
-                if(!visited[next.getTo()]){
-                    pq.add(new Edge(next.getTo(), next.getCost()));
-
+            //now 돌면서 방문하지 않은곳 큐에 담기
+            for(int i=0;i<edges.get(now).size();i++){
+                int next = edges.get(now).get(i).to;
+                int cost2 = edges.get(now).get(i).cost;
+                if(!visited[next]){
+                    pq.offer(new Edge(next, cost2));
                 }
             }
 
         }
 
-        return result;
     }
-
 
 }

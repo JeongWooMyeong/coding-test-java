@@ -4,29 +4,21 @@ import java.util.*;
 import java.io.*;
 
 /*
-프림 알고리즘
+프림 알고리즘 이용 -> 밀집 그래프 (데이터 많을때?)
  */
 
-public class 최소스패닝트리4 {
+public class 네트워크연결7 {
     static int N, M;
     static ArrayList<ArrayList<Edge>> edges = new ArrayList<>();
     static boolean[] visited;
+    static int result = 0;
 
     static class Edge implements Comparable<Edge>{
-        private int to;
-        private int cost;
-
+        int to;
+        int cost;
         public Edge(int to, int cost){
             this.to = to;
             this.cost = cost;
-        }
-
-        public int getTo(){
-            return this.to;
-        }
-
-        public int getCost(){
-            return this.cost;
         }
 
         public int compareTo(Edge other){
@@ -37,10 +29,12 @@ public class 최소스패닝트리4 {
 
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringTokenizer st;
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(br.readLine());
+        M = Integer.parseInt(br.readLine());
+
+        visited = new boolean[N+1];
 
         for(int i=0;i<=N;i++){
             edges.add(new ArrayList<>());
@@ -52,40 +46,43 @@ public class 최소스패닝트리4 {
             int b = Integer.parseInt(st.nextToken());
             int cost = Integer.parseInt(st.nextToken());
 
-            edges.get(a).add(new Edge(b, cost));
-            edges.get(b).add(new Edge(a, cost));
+            edges.get(a).add(new Edge(b,cost));
+            edges.get(b).add(new Edge(a,cost));
+
         }
 
-        System.out.println(prim(1));
+        prim(1);
+
+
+        System.out.println(result);
+
 
     }
 
-    static int prim(int start){
+    static void prim(int start){
         PriorityQueue<Edge> pq = new PriorityQueue<>();
-        visited = new boolean[N+1];
         pq.offer(new Edge(start, 0));
-        int result = 0;
 
         while(!pq.isEmpty()){
             Edge cur = pq.poll();
-            int to = cur.getTo();
-            int cost = cur.getCost();
+            int now = cur.to;
+            int cost = cur.cost;
 
-            if(visited[to]) continue;
-            visited[to] = true;
+            if(visited[now]) continue;
+            visited[now] = true;
             result += cost;
 
-            for(Edge next : edges.get(to)){
-                if(!visited[next.getTo()]){
-                    pq.add(new Edge(next.getTo(), next.getCost()));
+            for(int i=0;i<edges.get(now).size();i++){
+                int next = edges.get(now).get(i).to;
+                int cost2 = edges.get(now).get(i).cost;
 
+                if(!visited[next]){
+                    pq.offer(new Edge(next, cost2));
                 }
+
             }
 
         }
-
-        return result;
     }
-
 
 }
