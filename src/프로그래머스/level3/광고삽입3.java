@@ -8,8 +8,8 @@ public class 광고삽입3 {
     public static String solution(String play_time, String adv_time, String[] logs){
         int play = toSec(play_time);    //전체시간
         int adv = toSec(adv_time);  //광고시간
-        //시청한 인원수
-        int[] presum = new int[play + 2];   //넉넉하게
+        //시청한 인원수 (long 타입이 적절)
+        long[] presum = new long[play + 2];   //넉넉하게
         for(String l : logs){
             String[] times = l.split("-");
             int start = toSec(times[0]);
@@ -30,11 +30,11 @@ public class 광고삽입3 {
         }
 
         //adv time 구하기
-        int max = presum[adv - 1];  //광고시간 전까지
+        long max = presum[adv - 1];  //광고시간 전까지
         int startTime = 0;  //공익 광고 시간 0초로 초기화
 
         for(int i=adv;i<=play;i++){
-            int value = presum[i] - presum[i - adv];    //i-adv+1 초 (광고시작시간) 까지 시청한 인원
+            long value = presum[i] - presum[i - adv];    //i-adv+1 초 (광고시작시간) 까지 시청한 인원
             if(max < value){
                 max = value;
                 //시작 시간은 end - start + 1 임
