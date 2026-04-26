@@ -3,14 +3,18 @@ package 프로그래머스.level3;
 import java.util.*;
 import java.io.*;
 
+/*
+중심확장 방식
+ */
+
 public class 가장긴팰린드롬 {
     public static int solution(String s){
         int maxLen = 1;
         //char[] c = s.toCharArray();
 
         for(int i=0;i<s.length();i++){
-            maxLen = Math.max(maxLen, expand(s,i,i));
-            maxLen = Math.max(maxLen, expand(s,i,i+1));
+            maxLen = Math.max(maxLen, expand(s,i,i)); //aba
+            maxLen = Math.max(maxLen, expand(s,i,i+1)); //abba
         }
 
         return maxLen;
