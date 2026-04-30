@@ -1,7 +1,6 @@
-package 프로그래머스.level3;
+package 프로그래머스.level4;
 
 import java.util.*;
-import java.io.*;
 
 public class 징검다리 {
     public static int solution(int distance, int[] rocks, int n){
