@@ -5,6 +5,8 @@ import java.io.*;
 
 /*
 LinkedHashMap 이용
+Map<String, Integer> cache = new LinkedHashMap<>(cacheSize, 0.75f, true);
+마지막 param access order = true이렇게 했을때 get, put하면 해당 건 뒤로 감 (최신 사용)
  */
 
 public class 캐시3 {
