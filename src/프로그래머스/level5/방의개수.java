@@ -1,0 +1,58 @@
+package 프로그래머스.level5;
+
+import java.util.*;
+import java.io.*;
+
+public class 방의개수 {
+    static Map<String, Set<String>> visitedEdges;
+    static Set<String> visitedNodes;
+    static int[] dx = {-1,-1,0,1,1,1,0,-1};
+    static int[] dy = {0,1,1,1,0,-1,-1,-1};
+
+    public static int solution(int[] arrows){
+
+        visitedEdges = new HashMap<>();
+        visitedNodes = new HashSet<>();
+
+        int rooms = 0;
+        int x = 0;
+        int y = 0;
+        visitedNodes.add(x+","+y);
+
+        for(int dir : arrows){
+            //교차 때문에 2번 실행? 솔직히 잘 모르겠음 이렇게 왜 하는지
+            for(int step=0;step<2;step++){
+                int nx = x + dx[dir];
+                int ny = y + dy[dir];
+
+                String now = x + "," + y;
+                String next = nx + "," + ny;
+
+                visitedEdges.putIfAbsent(next, new HashSet<>());
+                visitedEdges.putIfAbsent(now, new HashSet<>());
+
+                if(visitedNodes.contains(next) && !visitedEdges.get(now).contains(next)){
+                    rooms++;
+                }
+
+                visitedNodes.add(next);
+                visitedEdges.get(now).add(next);
+                visitedEdges.get(next).add(now);
+
+                x = nx;
+                y = ny;
+
+            }
+        }
+
+        return rooms;
+
+    }
+
+    public static void main(String[] args) throws Exception{
+        int[] arrows = {6, 6, 6, 4, 4, 4, 2, 2, 2, 0, 0, 0, 1, 6, 5, 5, 3, 6, 0};
+
+        System.out.println(solution(arrows));
+    }
+
+}
