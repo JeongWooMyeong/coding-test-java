@@ -21,18 +21,21 @@ public class 징검다리4 {
 
             for(int i=0;i<rocks.length;i++){
                 int diff = rocks[i] - prev;
-                if(diff < mid) removed++;
-                prev = rocks[i];
+                if(diff < mid) {
+                    removed++;
+                }else {
+                    prev = rocks[i];
+                }
             }
 
             //마지막 돌과 distance와의 거리 측정
             if(distance - prev < mid) removed++;
 
-            if(removed >= n){
+            if(removed <= n){
                 answer = mid;
-                right = mid - 1;
-            }else{
                 left = mid + 1;
+            }else{
+                right = mid - 1;
             }
 
         }
