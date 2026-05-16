@@ -14,7 +14,7 @@ public class 산모양타일링2 {
         a[1] = 1;
         if(tops[0] == 1) b[1] = 3;
         else b[1] = 2;
-
+        //2부터 적용
         for(int i=2;i<=n;i++){
             a[i] = a[i-1] + b[i-1] % mod;
             if(tops[i-1] == 1){
