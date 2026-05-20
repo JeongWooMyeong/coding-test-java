@@ -58,4 +58,10 @@ public class 숫자카드나누기2 {
         return a;
     }
 
+    public static void main(String[] args) throws Exception{
+        int[] arrayA = {10,20};
+        int[] arrayB = {5,17};
+        System.out.println(solution(arrayA, arrayB));
+    }
+
 }
