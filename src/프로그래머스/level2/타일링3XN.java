@@ -4,11 +4,11 @@ import java.util.*;
 import java.io.*;
 
 public class 타일링3XN {
-    static int[] dp;
+    static long[] dp;
 
     public static int solution(int n){
         int answer = 0;
-        dp = new int[n+1];
+        dp = new long[n+1];
         int mod = 1000000007;
 
         if(n % 2 != 0) return 0;
@@ -16,15 +16,13 @@ public class 타일링3XN {
         dp[0] = 1;
         dp[1] = 0;
         dp[2] = 3;
-        for(int i=3;i<=n;i++){
-            dp[i] = (3 * dp[i-2])%mod;
-            for(int j=4;j<=i;j+=2){
-                dp[i] += (dp[i-j] * 2)%mod;
-            }
+
+        for(int i=4;i<=n;i++){
+            dp[i] = (4 * dp[i - 2] % mod - dp[i - 4] + mod) % mod;
         }
 
 
-        return dp[n];
+        return (int)dp[n];
 
 
     }
