@@ -1,0 +1,75 @@
+package 프로그래머스.level3;
+
+import java.util.*;
+import java.io.*;
+
+public class 가장먼노드19 {
+
+    static ArrayList<ArrayList<Integer>> edges;
+    static int[] dist;
+    static boolean[] visited;
+    static int answer;
+    static int maxValue;
+
+    public static int solution(int n, int[][] edge){
+        edges = new ArrayList<>();
+        for(int i=0;i<=n;i++){
+            edges.add(new ArrayList<>());
+        }
+
+        dist = new int[n+1];
+        visited = new boolean[n+1];
+        answer = 0;
+        maxValue = Integer.MIN_VALUE;
+
+        for(int[] e : edge){
+            int a = e[0];
+            int b = e[1];
+
+            edges.get(a).add(b);
+            edges.get(b).add(a);
+        }
+
+        bfs(1);
+
+        for(int i=1;i<=n;i++){
+            maxValue = Math.max(maxValue, dist[i]);
+        }
+
+        for(int i=1;i<=n;i++){
+            if(maxValue == dist[i]) answer++;
+        }
+
+        return answer;
+    }
+
+    static void bfs(int start){
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(start);
+        visited[start] = true;
+        dist[start] = 0;
+
+        while(!q.isEmpty()){
+            int now = q.poll();
+
+            for(int i=0;i<edges.get(now).size();i++){
+                int next = edges.get(now).get(i);
+                if(!visited[next]){
+                    visited[next]  = true;
+                    dist[next] = dist[now] + 1;
+                    q.offer(next);
+                }
+            }
+
+        }
+
+    }
+
+    public static void main(String[] args) throws Exception{
+        int n = 6;
+        int[][] vertex = {{3,6},{4,3},{3,2},{1,3},{1,2},{2,4},{5,2}};
+
+        System.out.println(solution(n, vertex));
+    }
+
+}
