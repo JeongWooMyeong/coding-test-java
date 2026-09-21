@@ -1,66 +1,44 @@
-package 프로그래머스.level3;
+package 프로그래머스.level4;
 
 import java.util.*;
 import java.io.*;
 
-public class 노드사이의거리14 {
+public class LCA10 {
 
     static int N,M,LOG;
-    static List<List<Edge>> edges;
+    static List<List<Integer>> edges;
+    static StringBuilder sb;
     static int[][] parent;
     static int[] depth;
-    static int[] dist;
     static boolean[] visited;
 
-    static class Edge implements Comparable<Edge>{
-        int to;
-        int cost;
-
-        public Edge(int to, int cost){
-            this.to = to;
-            this.cost = cost;
-        }
-
-        public int compareTo(Edge other){
-            return Integer.compare(this.cost, other.cost);
-        }
-
-    }
-
     public static void main(String[] args) throws Exception{
+        long totalStart = System.nanoTime();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringTokenizer st;
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(br.readLine());
+
         LOG = 1;
+        while((1<<LOG) < N) LOG++;
 
-        while((1<<LOG) < N){
-            LOG++;
-        }
+        parent = new int[LOG][N+1];
+        depth = new int[N+1];
+        visited = new boolean[N+1];
 
         edges = new ArrayList<>();
-        for(int i=0;i<=N;i++){
-            edges.add(new ArrayList<>());
-        }
+        for(int i=0;i<=N;i++) edges.add(new ArrayList<>());
 
         for(int i=0;i<N-1;i++){
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
-            int cost = Integer.parseInt(st.nextToken());
 
-            edges.get(a).add(new Edge(b,cost));
-            edges.get(b).add(new Edge(a,cost));
-
+            edges.get(a).add(b);
+            edges.get(b).add(a);
         }
 
-        parent = new int[LOG][N+1];
-        depth = new int[N+1];
-        dist = new int[N+1];
-        visited = new boolean[N+1];
-
-        dfs(1,1,0,0);
+        dfs(1,1,0);
 
         for(int k=1;k<LOG;k++){
             for(int v=1;v<=N;v++){
@@ -68,34 +46,32 @@ public class 노드사이의거리14 {
             }
         }
 
-        StringBuilder sb = new StringBuilder();
+        M = Integer.parseInt(br.readLine());
+        sb = new StringBuilder();
 
         for(int i=0;i<M;i++){
             st = new StringTokenizer(br.readLine());
             int start = Integer.parseInt(st.nextToken());
             int end = Integer.parseInt(st.nextToken());
-            int lca = LCA(start, end);
 
-            int value = dist[start] + dist[end] - 2 * dist[lca];
-
-            sb.append(value).append("\n");
+            sb.append(LCA(start,end)).append("\n");
         }
 
         System.out.println(sb);
+
+        long totalEnd = System.nanoTime();
+        System.out.println("전체 실행 시간: " + (totalEnd - totalStart)/1_000_000 + " ms");
     }
 
-    static void dfs(int v, int p, int d, int c){
+    static void dfs(int v, int p, int d){
         parent[0][v] = p;
         depth[v] = d;
-        dist[v] = c;
         visited[v] = true;
 
         for(int i=0;i<edges.get(v).size();i++){
-            int next = edges.get(v).get(i).to;
-            int cost = edges.get(v).get(i).cost;
-
-            if(!visited[next]) {
-                dfs(next, v, d + 1, c + cost);
+            int next = edges.get(v).get(i);
+            if(!visited[next]){
+                dfs(next,v,d+1);
             }
         }
 
@@ -108,7 +84,6 @@ public class 노드사이의거리14 {
             u = temp;
         }
 
-        //parent
         for(int k=LOG-1;k>=0;k--){
             if(depth[u] - (1<<k) >= depth[v]){
                 u = parent[k][u];

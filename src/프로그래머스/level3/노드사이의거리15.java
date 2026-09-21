@@ -3,7 +3,7 @@ package 프로그래머스.level3;
 import java.util.*;
 import java.io.*;
 
-public class 노드사이의거리14 {
+public class 노드사이의거리15 {
 
     static int N,M,LOG;
     static List<List<Edge>> edges;
@@ -11,7 +11,6 @@ public class 노드사이의거리14 {
     static int[] depth;
     static int[] dist;
     static boolean[] visited;
-
     static class Edge implements Comparable<Edge>{
         int to;
         int cost;
@@ -33,16 +32,9 @@ public class 노드사이의거리14 {
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-        LOG = 1;
-
-        while((1<<LOG) < N){
-            LOG++;
-        }
 
         edges = new ArrayList<>();
-        for(int i=0;i<=N;i++){
-            edges.add(new ArrayList<>());
-        }
+        for(int i=0;i<=N;i++) edges.add(new ArrayList<>());
 
         for(int i=0;i<N-1;i++){
             st = new StringTokenizer(br.readLine());
@@ -52,7 +44,11 @@ public class 노드사이의거리14 {
 
             edges.get(a).add(new Edge(b,cost));
             edges.get(b).add(new Edge(a,cost));
+        }
 
+        LOG = 1;
+        while((1<<LOG) < N){
+            LOG++;
         }
 
         parent = new int[LOG][N+1];
@@ -60,7 +56,7 @@ public class 노드사이의거리14 {
         dist = new int[N+1];
         visited = new boolean[N+1];
 
-        dfs(1,1,0,0);
+        dfs(1, 1, 0, 0);
 
         for(int k=1;k<LOG;k++){
             for(int v=1;v<=N;v++){
@@ -75,13 +71,13 @@ public class 노드사이의거리14 {
             int start = Integer.parseInt(st.nextToken());
             int end = Integer.parseInt(st.nextToken());
             int lca = LCA(start, end);
-
             int value = dist[start] + dist[end] - 2 * dist[lca];
 
             sb.append(value).append("\n");
         }
 
         System.out.println(sb);
+
     }
 
     static void dfs(int v, int p, int d, int c){
@@ -93,9 +89,8 @@ public class 노드사이의거리14 {
         for(int i=0;i<edges.get(v).size();i++){
             int next = edges.get(v).get(i).to;
             int cost = edges.get(v).get(i).cost;
-
-            if(!visited[next]) {
-                dfs(next, v, d + 1, c + cost);
+            if(!visited[next]){
+                dfs(next,v,d+1,c+cost);
             }
         }
 
@@ -108,7 +103,6 @@ public class 노드사이의거리14 {
             u = temp;
         }
 
-        //parent
         for(int k=LOG-1;k>=0;k--){
             if(depth[u] - (1<<k) >= depth[v]){
                 u = parent[k][u];
@@ -125,7 +119,6 @@ public class 노드사이의거리14 {
         }
 
         return parent[0][u];
-
     }
 
 }
