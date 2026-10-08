@@ -3,17 +3,19 @@ package 프로그래머스.level4;
 import java.util.*;
 import java.io.*;
 
-public class 계단수6 {
+public class 계단수8 {
 
     static int N;
     static int[][][] dp;
     static int mod = 1000000000;
+    static int answer;
 
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
         N = Integer.parseInt(br.readLine());
+
         dp = new int[N+1][10][1<<10];
 
         for(int d=1;d<=9;d++){
@@ -25,8 +27,9 @@ public class 계단수6 {
                 for(int mask=0;mask<(1<<10);mask++){
                     if(dp[len-1][d][mask] == 0) continue;
 
+                    //d == 0 일떄는 1만 가능 , d == 9 일때는 8만 가능
                     if(d > 0){
-                        int newMask = mask | (1 << (d-1));
+                        int newMask = mask | (1<<(d-1));
                         dp[len][d-1][newMask] = (dp[len][d-1][newMask] + dp[len-1][d][mask]) % mod;
                     }
 
@@ -39,13 +42,15 @@ public class 계단수6 {
             }
         }
 
-        int answer = 0;
+        answer = 0;
 
         for(int d=0;d<=9;d++){
             answer = (answer + dp[N][d][(1<<10)-1]) % mod;
         }
 
+
         System.out.println(answer);
+
     }
 
 }
