@@ -3,7 +3,7 @@ package 프로그래머스.level3;
 import java.util.*;
 import java.io.*;
 
-public class K번쨰수5 {
+public class K번째수5 {
 
     static int N, K;
 
