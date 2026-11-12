@@ -22,8 +22,8 @@ public class 로봇시뮬레이션2 {
         }
 
     }
-    static int[] dx = {-1,0,1,0};
-    static int[] dy = {0,1,0,-1};
+    static int[] dx = {0,1,0,-1};
+    static int[] dy = {1,0,-1,0};
     static StringBuilder sb;
 
     public static void main(String[] args) throws Exception{
